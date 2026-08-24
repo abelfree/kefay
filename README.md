@@ -4,7 +4,7 @@ A full-stack ERP module demonstrating multi-tenant SaaS architecture, role-based
 approval workflows, and transactional financial data — built on Next.js, NestJS,
 Prisma, and PostgreSQL.
 
-**Live demo:** [kefay-erp-app.netlify.app](https://kefay-erp-app.netlify.app) · **API:** [kefay-production.up.railway.app](https://kefay-production.up.railway.app) · **Frontend:** Next.js + TypeScript · **Backend:** NestJS · **DB:** PostgreSQL (Supabase) + Prisma
+**Live demo:** [kefay-erp.netlify.app](https://kefay-erp.netlify.app) · **API:** [kefay-production.up.railway.app](https://kefay-production.up.railway.app) · **Frontend:** Next.js + TypeScript · **Backend:** NestJS · **DB:** PostgreSQL (Supabase) + Prisma
 
 ![Kefay dashboard](docs/screenshot.png)
 
