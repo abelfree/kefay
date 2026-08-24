@@ -1,14 +1,16 @@
 'use client';
 
 import Link from 'next/link';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { DataTable, type DataTableColumn } from '../../components/DataTable';
 import { Header } from '../../components/Header';
+import { InvoiceActions } from '../../components/InvoiceActions';
 import { RequireAuth } from '../../components/RequireAuth';
 import { StatusBadge } from '../../components/StatusBadge';
 import { SummaryCard } from '../../components/SummaryCard';
 import { useInvoices } from '../../hooks/useInvoices';
-import type { Invoice, InvoiceStatus } from '../../lib/types';
+import { getUser } from '../../lib/auth';
+import type { AuthUser, Invoice, InvoiceStatus } from '../../lib/types';
 
 const PAGE_SIZE = 10;
 const STATUS_OPTIONS: Array<InvoiceStatus | 'ALL'> = [
@@ -25,6 +27,11 @@ const dateFormatter = new Intl.DateTimeFormat('en-US', { month: 'short', day: 'n
 function DashboardContent() {
   const [status, setStatus] = useState<InvoiceStatus | 'ALL'>('ALL');
   const [page, setPage] = useState(1);
+  const [user, setUser] = useState<AuthUser | null>(null);
+
+  useEffect(() => {
+    setUser(getUser());
+  }, []);
 
   const invoicesQuery = useInvoices({ status, page, pageSize: PAGE_SIZE });
   // Summary cards reuse the paginated list endpoint rather than a
@@ -77,6 +84,12 @@ function DashboardContent() {
       align: 'right',
       render: (row) => dateFormatter.format(new Date(row.createdAt)),
       sortValue: (row) => row.createdAt,
+    },
+    {
+      key: 'actions',
+      header: 'Actions',
+      align: 'right',
+      render: (row) => <InvoiceActions invoice={row} user={user} />,
     },
   ];
 
