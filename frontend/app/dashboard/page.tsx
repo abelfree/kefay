@@ -27,7 +27,12 @@ function DashboardContent() {
   const [page, setPage] = useState(1);
 
   const invoicesQuery = useInvoices({ status, page, pageSize: PAGE_SIZE });
-  const approvedQuery = useInvoices({ status: 'APPROVED', page: 1, pageSize: 500 });
+  // Summary cards reuse the paginated list endpoint rather than a
+  // dedicated aggregate route. pageSize is capped at the API's max (100),
+  // so the approved-amount sum covers up to 100 approved invoices — fine
+  // for this dataset, but a real aggregate endpoint would be the next
+  // step if tenants routinely exceeded that.
+  const approvedQuery = useInvoices({ status: 'APPROVED', page: 1, pageSize: 100 });
   const pendingQuery = useInvoices({ status: 'SUBMITTED', page: 1, pageSize: 1 });
 
   const approvedTotal = useMemo(() => {

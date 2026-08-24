@@ -3,7 +3,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import axios from 'axios';
 import { useMemo } from 'react';
-import { useFieldArray, useForm } from 'react-hook-form';
+import { useFieldArray, useForm, useWatch } from 'react-hook-form';
 import { z } from 'zod';
 
 const TAX_RATE = 0.15;
@@ -35,7 +35,6 @@ export function InvoiceForm({ onSubmit, submitError }: InvoiceFormProps) {
     register,
     control,
     handleSubmit,
-    watch,
     formState: { errors, isSubmitting },
   } = useForm<InvoiceFormInput, unknown, InvoiceFormValues>({
     resolver: zodResolver(invoiceSchema),
@@ -47,10 +46,13 @@ export function InvoiceForm({ onSubmit, submitError }: InvoiceFormProps) {
   });
 
   const { fields, append, remove } = useFieldArray({ control, name: 'lineItems' });
-  const lineItems = watch('lineItems');
+  // useWatch (not the plain `watch()` fn) is what reliably re-renders
+  // this component on every keystroke in a dynamic field array — with
+  // `watch()` the live total consistently lagged one edit behind.
+  const lineItems = useWatch({ control, name: 'lineItems' });
 
   const { subtotal, tax, total } = useMemo(() => {
-    const sub = lineItems.reduce((sum, item) => {
+    const sub = (lineItems ?? []).reduce((sum, item) => {
       const qty = Number(item.quantity) || 0;
       const price = Number(item.unitPrice) || 0;
       return sum + qty * price;
