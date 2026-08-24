@@ -4,7 +4,7 @@ A full-stack ERP module demonstrating multi-tenant SaaS architecture, role-based
 approval workflows, and transactional financial data — built on Next.js, NestJS,
 Prisma, and PostgreSQL.
 
-**Live demo:** _add your deployed URL here_ · **Frontend:** Next.js + TypeScript · **Backend:** NestJS · **DB:** PostgreSQL + Prisma
+**Live demo:** [kefay-erp-app.netlify.app](https://kefay-erp-app.netlify.app) · **API:** [kefay-production.up.railway.app](https://kefay-production.up.railway.app) · **Frontend:** Next.js + TypeScript · **Backend:** NestJS · **DB:** PostgreSQL (Supabase) + Prisma
 
 ![Kefay dashboard](docs/screenshot.png)
 
@@ -47,6 +47,15 @@ totals consistent.
 **Frontend:** Next.js · TypeScript · Tailwind · React Hook Form · Zod · TanStack Query
 **Backend:** NestJS · TypeScript · Prisma · PostgreSQL · JWT
 **Tooling:** Docker · docker-compose · Jest
+
+## Live deployment
+
+The hosted demo splits across three services: **Supabase** for managed PostgreSQL,
+**Railway** for the NestJS API (a persistent Node server — not something Supabase's
+own compute, which is Deno-based Edge Functions, can host), and **Netlify** for the
+static-exported Next.js frontend. Every page in this app is a client component with
+no server-only Next.js features, so it builds to plain static HTML/JS and needs no
+Node runtime on the frontend host.
 
 ## Running locally
 
